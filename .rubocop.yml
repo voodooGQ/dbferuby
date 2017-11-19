@@ -1,0 +1,33 @@
+inherit_gem:
+  rubocop-github:
+    - config/default.yml
+AllCops:
+  Exclude:
+    - 'bin/*'
+    - 'Gemfile'
+    - 'Guardfile'
+  DisplayCopNames: true
+
+# Metrics
+Metrics/MethodLength:
+  Max: 40 # Should probably be another method at this point
+Metrics/BlockLength:
+  Max: 30 # Probably a way to shorten up the block
+Metrics/ModuleLength:
+  Max: 200
+Metrics/ClassLength:
+  Max: 125
+
+# Style
+Style/GuardClause:
+  Enabled: false
+Style/RegexpLiteral:
+  Enabled: false
+Style/DoubleNegation:
+  Enabled: false
+
+# Layout
+Layout/ExtraSpacing:
+  Enabled: false # Allows for aligning assignment equals
+Layout/SpaceAroundOperators:
+  Enabled: false # Allows for aligning assignment equals
