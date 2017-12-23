@@ -5,27 +5,31 @@ require_relative 'game'
 require_relative 'command_parser'
 
 module PlayerConnection
-  attr_reader :game, :player, :command_parser
+  attr_accessor :player
+  attr_reader :game, :command_parser, :login_processor
 
   def initialize
     @game = Game.instance
+    @login_processor = LoginProcess.new(self)
   end
 
   def post_init
     puts "-- someone connected to the echo server!"
+  end
 
-    @player = Player.create!(name: "bar")
+  def process_player(player)
+    @player = player
     @player.connection = self
-    @command_parser = CommandParser.new(@player)
+    @command_parser = ComandParser.new(@player)
+    add_player_to_connection_pool
+  end
 
-    binding.pry
-
-    @game.players << @player
-    @player.send_data ">> "
+  def add_player_to_connection_pool
+    @game.players << @player if @player
   end
 
   def receive_data(data)
-    @command_parser.call(data)
+    @player ? @command_parser.call(data) : @login_processor.call(data)
   end
 
   def unbind

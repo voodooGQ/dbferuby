@@ -4,9 +4,10 @@ require "active_record"
 class Player < ActiveRecord::Base
   attr_accessor :connection
 
-  establish_connection adapter: "sqlite3", database: "dbfe.db"
-  connection.create_table :players, force: true do |t|
+  establish_connection(adapter: "sqlite3", database: "dbfe.db")
+  connection.create_table(:players, force: true) do |t|
     t.string :name
+    t.string :password
     t.timestamps
   end unless table_exists?
 

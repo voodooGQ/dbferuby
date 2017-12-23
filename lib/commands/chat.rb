@@ -5,7 +5,7 @@ module Commands
     def call(args)
       game = Game.instance
       game.players.each do |player|
-        player.send_data "Chat: #{args.join(" ")}"
+        player.send_data "#{@initiator.name} chats: #{args.join(" ")}"
       end
     end
   end
