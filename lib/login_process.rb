@@ -11,14 +11,10 @@ class LoginProcess
 
   def call(data)
     if !@player && data == "new"
-      # Creation Process
+      # @todo: Creation Process
     end
 
-    if !@player
-      verify_username(data.chomp)
-    else
-      verify_password(data.chomp)
-    end
+    @player ? verify_password(data.chomp) : verify_username(data.chmop)
   end
 
   def verify_username(username)
@@ -33,12 +29,10 @@ class LoginProcess
 
   # @todo: Stiffen up security here
   def verify_password(password)
-    if @player
-      if @player.password == password
-        @connection.process_player(@player)
-      else
-        @connection.send_data "Incorrect password. Please try again.\n"
-      end
+    if @player.password == password
+      @connection.process_player(@player)
+    else
+      @connection.send_data "Incorrect password. Please try again.\n"
     end
   end
 end

@@ -29,6 +29,7 @@ module PlayerConnection
   end
 
   def receive_data(data)
+    data = data.chomp
     @player ? @command_parser.call(data) : @login_processor.call(data)
   end
 
