@@ -5,12 +5,14 @@ require_relative 'game'
 require_relative 'command_parser'
 
 module PlayerConnection
-  attr_accessor :player
-  attr_reader :game, :command_parser, :login_processor
+  attr_accessor :player, :new_character
+  attr_reader :game, :command_parser, :login_processor, :creation_processor
 
   def initialize
     @game = Game.instance
     @login_processor = LoginProcess.new(self)
+    @creation_processor = CreationProcess.new(self)
+    @new_character = false
   end
 
   def post_init
@@ -20,7 +22,7 @@ module PlayerConnection
   def process_player(player)
     @player = player
     @player.connection = self
-    @command_parser = ComandParser.new(@player)
+    @command_parser = CommandParser.new(@player)
     add_player_to_connection_pool
   end
 
@@ -30,7 +32,13 @@ module PlayerConnection
 
   def receive_data(data)
     data = data.chomp
-    @player ? @command_parser.call(data) : @login_processor.call(data)
+    if @new_character || (!@player && data == "new")
+      @creation_processor.call(data)
+    elsif !@player
+      @login_processor.call(data)
+    else
+      @command_parser.call(data)
+    end
   end
 
   def unbind

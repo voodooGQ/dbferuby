@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class LoginProcess
-  attr_reader :connection, :player, :game
+  attr_accessor = :new_character
+  attr_reader :connection, :player, :game, :creation_process
 
   def initialize(connection)
     @game = Game.instance
@@ -10,11 +11,16 @@ class LoginProcess
   end
 
   def call(data)
-    if !@player && data == "new"
-      # @todo: Creation Process
-    end
+    data = data.chomp
 
-    @player ? verify_password(data.chomp) : verify_username(data.chmop)
+    if !@player && data == "new" || @new_character
+      @creation_process ||= CreationProcess.new(connection, login_processor)
+      @creation_process.call(data)
+    elsif !@player
+      verify_username(data)
+    else
+      verify_password(data)
+    end
   end
 
   def verify_username(username)
