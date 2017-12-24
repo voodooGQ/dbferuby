@@ -17,7 +17,7 @@ class Game
 
   def add_connection_to_pool(connection)
     unless connection.kind_of?(EventMachine::Connection)
-      raise StandardError, "Must be of type EventMachine::Connection to add " /
+      raise StandardError, "Must be of type EventMachine::Connection to add " \
         "to the connection pool"
     end
 

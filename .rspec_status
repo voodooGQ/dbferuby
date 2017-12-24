@@ -1,4 +1,6 @@
 example_id                                | status | run_time        |
 ----------------------------------------- | ------ | --------------- |
-./spec/lib/commands/chat_spec.rb[1:1:1:1] | passed | 0.03948 seconds |
-./spec/lib/commands/quit_spec.rb[1:1:1:1] | passed | 0.00531 seconds |
+./spec/lib/commands/chat_spec.rb[1:1:1:1] | passed | 0.01675 seconds |
+./spec/lib/commands/quit_spec.rb[1:1:1:1] | passed | 0.03123 seconds |
+./spec/lib/game_spec.rb[1:1:1:1]          | passed | 0.00163 seconds |
+./spec/lib/game_spec.rb[1:1:1:2]          | passed | 0.00385 seconds |
