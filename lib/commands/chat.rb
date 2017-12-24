@@ -2,7 +2,7 @@
 
 module Commands
   class Chat < CommandBase
-    def call(args)
+    def call(*args)
       game = Game.instance
       game.players.each do |player|
         player.send_data "#{@initiator.name} chats: #{args.join(" ")}"

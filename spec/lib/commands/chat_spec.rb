@@ -2,6 +2,7 @@
 
 module Commands
   RSpec.describe Chat, type: [:command] do
+    include_context "socket"
     let(:subject) { described_class }
 
     describe "instance_methods" do
@@ -10,9 +11,9 @@ module Commands
 
       describe "call" do
         it "sends a message to all the players in the game" do
-          @game.run do |s|
-            @initiator = SocketHelper.create_connection
-            SocketHelper.populate_connection_pool
+          @game.run do |server|
+            @initiator = create_connection
+            populate_connection_pool
 
             @game.players.each do |p|
               expect(p).to receive(:send_data).with(
@@ -21,8 +22,7 @@ module Commands
             end
 
             subject.new(@initiator.player).call(%w[foo bar baz])
-
-            s.stop_event_loop
+            server.stop_event_loop
           end
         end
       end

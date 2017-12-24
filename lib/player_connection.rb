@@ -5,8 +5,14 @@ require_relative 'game'
 require_relative 'command_parser'
 
 class PlayerConnection < EventMachine::Connection
-  attr_accessor :player, :new_character
-  attr_reader :game, :command_parser, :login_processor, :creation_processor
+  attr_accessor :player,
+                :new_character
+
+  attr_reader :game,
+              :command_parser,
+              :login_processor,
+              :creation_processor,
+              :intentionally_closed_connection
 
   def initialize
     @game = Game.instance
@@ -30,6 +36,10 @@ class PlayerConnection < EventMachine::Connection
     @game.players << @player if @player
   end
 
+  def remove_player_from_connection_pool
+    @game.players.delete_if {|p| p.connection == self}
+  end
+
   def receive_data(data)
     data = data.chomp
     if @new_character || (!@player && data == "new")
@@ -41,8 +51,16 @@ class PlayerConnection < EventMachine::Connection
     end
   end
 
+  def close_connection(*args)
+    @intentionally_closed_connection = true
+    super(*args)
+  end
+
   def unbind
-    puts "-- someone disconnected from the echo server!"
-    @game.players.delete_if {|p| p.connection == self}
+    if @intentionally_closed_connection
+      puts "-- someone disconnected from the echo server!"
+    end
+    # @todo: Allow for resume on dropped connections
+    remove_player_from_connection_pool
   end
 end

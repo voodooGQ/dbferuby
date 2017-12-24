@@ -19,8 +19,16 @@ class Game
     @players.clear
   end
 
+  def connection_count
+    @players.count
+  end
+
   def run(ip: "127.0.0.1", port: "8081", socket_server: EventMachine, &block)
     @server ||= socket_server.run do |s|
+      # hit Control + C to stop
+      Signal.trap("INT")  { socket_server.stop }
+      Signal.trap("TERM") { socket_server.stop }
+
       socket_server.start_server ip, port, PlayerConnection
       yield(socket_server) if block_given?
     end
