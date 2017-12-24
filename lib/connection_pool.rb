@@ -2,6 +2,5 @@
 require 'singleton'
 
 class ConnectionPool < Array
-  include Singleton
 end
 

@@ -11,16 +11,7 @@ class LoginProcess
   end
 
   def call(data)
-    data = data.chomp
-
-    if !@player && data == "new" || @new_character
-      @creation_process ||= CreationProcess.new(connection, login_processor)
-      @creation_process.call(data)
-    elsif !@player
-      verify_username(data)
-    else
-      verify_password(data)
-    end
+    @player ? verify_password(data) : verify_username(data)
   end
 
   def verify_username(username)

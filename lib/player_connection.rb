@@ -4,7 +4,7 @@ require_relative 'player'
 require_relative 'game'
 require_relative 'command_parser'
 
-module PlayerConnection
+class PlayerConnection < EventMachine::Connection
   attr_accessor :player, :new_character
   attr_reader :game, :command_parser, :login_processor, :creation_processor
 

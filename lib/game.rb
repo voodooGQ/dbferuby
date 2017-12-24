@@ -12,12 +12,17 @@ class Game
               :players
 
   def initialize
-    @players = ConnectionPool.instance
+    @players = ConnectionPool.new
   end
 
-  def run(ip: "127.0.0.1", port: "8081", socket_server: EventMachine)
-    @server ||= socket_server.run do
+  def clear_connection_pool
+    @players.clear
+  end
+
+  def run(ip: "127.0.0.1", port: "8081", socket_server: EventMachine, &block)
+    @server ||= socket_server.run do |s|
       socket_server.start_server ip, port, PlayerConnection
+      yield(socket_server) if block_given?
     end
   end
 end
