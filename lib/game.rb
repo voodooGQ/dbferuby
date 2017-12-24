@@ -2,10 +2,12 @@
 
 require 'eventmachine'
 require 'singleton'
+require 'forwardable'
 require_relative 'connection_pool'
 require_relative 'player_connection'
 
 class Game
+  extend Forwardable
   include Singleton
 
   attr_reader :server,
@@ -13,31 +15,6 @@ class Game
 
   def initialize
     @connections = ConnectionPool.new
-  end
-
-  def add_connection_to_pool(connection)
-    unless connection.kind_of?(EventMachine::Connection)
-      raise StandardError, "Must be of type EventMachine::Connection to add " \
-        "to the connection pool"
-    end
-
-    @connections << connection
-  end
-
-  def remove_connection_from_pool(connection)
-    @connections.delete_if{ |c| c == connection }
-  end
-
-  def clear_connection_pool
-    @connections.clear
-  end
-
-  def connection_count
-    @connections.count
-  end
-
-  def players
-    @connections.map(&:player)
   end
 
   def run(ip: "127.0.0.1", port: "8081", socket_server: EventMachine, &block)
@@ -50,5 +27,11 @@ class Game
       yield(socket_server) if block_given?
     end
   end
+
+  def_delegator  :@connections, :add_connection,    :add_connection_to_pool
+  def_delegator  :@connections, :remove_connection, :remove_connection_from_pool
+  def_delegator  :@connections, :clear,             :clear_connection_pool
+  def_delegator  :@connections, :count,             :connection_count
+  def_delegators :@connections, :players
 end
 

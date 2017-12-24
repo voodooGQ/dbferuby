@@ -9,31 +9,50 @@ RSpec.describe Game, type: [:main, :server] do
     after  { @instance.clear_connection_pool }
 
     describe "add_connection_to_pool" do
-      it "raises an error when added item is not an EM::Connection" do
+      it "calls to the connections 'add_connection' method" do
         @instance.run do |server|
-          expect(@instance.connection_count).to eq(0)
-
-          expect{ @instance.add_connection_to_pool("foo") }.to raise_error(
-            StandardError
-          ).with_message(
-            "Must be of type EventMachine::Connection to add to the " \
-            "connection pool"
-          )
-
-          expect(@instance.connection_count).to eq(0)
-
+          expect(@instance.connections).to receive(:add_connection)
+          @instance.add_connection_to_pool(EventMachine::Connection.new(1))
           server.stop_event_loop
         end
       end
+    end
 
-      it "adds a new connection to the pool" do
+    describe "remove_connection_from_pool" do
+      it "calls to the connections 'remove_connection' method" do
         @instance.run do |server|
-          expect(@instance.connection_count).to eq(0)
+          expect(@instance.connections).to receive(:remove_connection)
+          @instance.remove_connection_from_pool(EventMachine::Connection.new(1))
+          server.stop_event_loop
+        end
+      end
+    end
 
-          expect{ create_connection }.to(
-            change{ @instance.connection_count }.by(1)
-          )
+    describe "clear_connection_pool" do
+      it "calls to the connections 'clear' method" do
+        @instance.run do |server|
+          expect(@instance.connections).to receive(:clear).at_least(:twice)
+          @instance.clear_connection_pool
+          server.stop_event_loop
+        end
+      end
+    end
 
+    describe "connection_count" do
+      it "calls to the connections 'count' method" do
+        @instance.run do |server|
+          expect(@instance.connections).to receive(:count)
+          @instance.connection_count
+          server.stop_event_loop
+        end
+      end
+    end
+
+    describe "players" do
+      it "calls to the connections 'player' method" do
+        @instance.run do |server|
+          expect(@instance.connections).to receive(:players)
+          @instance.players
           server.stop_event_loop
         end
       end
