@@ -11,7 +11,7 @@ module Commands
 
       describe "call" do
         it "removes the initiator from the connection pool" do
-          @game.run do |server|
+          spec_socket_server do |server|
             initiator = create_connection
             expect(@game.connection_count).to eq(1)
 
@@ -21,8 +21,6 @@ module Commands
             expect{
               subject.new(initiator.player).call
             }.to change{ @game.connection_count }.by(-1)
-
-            server.stop_event_loop
           end
         end
       end

@@ -11,7 +11,7 @@ module Commands
 
       describe "call" do
         it "sends a message to all the players in the game" do
-          @game.run do |server|
+          spec_socket_server do |server|
             @initiator = create_connection
             populate_connection_pool
 
@@ -22,7 +22,6 @@ module Commands
             end
 
             subject.new(@initiator.player).call(%w[foo bar baz])
-            server.stop_event_loop
           end
         end
       end
