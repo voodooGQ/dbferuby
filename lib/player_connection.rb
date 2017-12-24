@@ -29,15 +29,7 @@ class PlayerConnection < EventMachine::Connection
     @player = player
     @player.connection = self
     @command_parser = CommandParser.new(@player)
-    add_player_to_connection_pool
-  end
-
-  def add_player_to_connection_pool
-    @game.players << @player if @player
-  end
-
-  def remove_player_from_connection_pool
-    @game.players.delete_if {|p| p.connection == self}
+    @game.add_connection_to_pool(@player.connection)
   end
 
   def receive_data(data)
@@ -61,6 +53,6 @@ class PlayerConnection < EventMachine::Connection
       puts "-- someone disconnected from the echo server!"
     end
     # @todo: Allow for resume on dropped connections
-    remove_player_from_connection_pool
+    @game.remove_connection_from_pool(self)
   end
 end

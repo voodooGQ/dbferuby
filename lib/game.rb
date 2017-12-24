@@ -9,18 +9,35 @@ class Game
   include Singleton
 
   attr_reader :server,
-              :players
+              :connections
 
   def initialize
-    @players = ConnectionPool.new
+    @connections = ConnectionPool.new
+  end
+
+  def add_connection_to_pool(connection)
+    unless connection.kind_of?(EventMachine::Connection)
+      raise StandardError, "Must be of type EventMachine::Connection to add " /
+        "to the connection pool"
+    end
+
+    @connections << connection
+  end
+
+  def remove_connection_from_pool(connection)
+    @connections.delete_if{ |c| c == connection }
   end
 
   def clear_connection_pool
-    @players.clear
+    @connections.clear
   end
 
   def connection_count
-    @players.count
+    @connections.count
+  end
+
+  def players
+    @connections.map(&:player)
   end
 
   def run(ip: "127.0.0.1", port: "8081", socket_server: EventMachine, &block)
