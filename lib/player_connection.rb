@@ -50,9 +50,9 @@ class PlayerConnection < EventMachine::Connection
 
   def unbind
     if @intentionally_closed_connection
-      puts "-- someone disconnected from the echo server!"
-    end
     # @todo: Allow for resume on dropped connections
+    end
+    puts "-- someone disconnected from the echo server!"
     @game.remove_connection_from_pool(self)
   end
 end

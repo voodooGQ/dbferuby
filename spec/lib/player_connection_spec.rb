@@ -112,10 +112,37 @@ RSpec.describe PlayerConnection, type: [:socket, :connection] do
   end
 
   describe "close_connection" do
+    it "sets the intentionally_closed_connection flag to true" do
+      spec_socket_server do
+        obj = subject.new(signature)
 
+        expect(obj.intentionally_closed_connection).to be_falsey
+        obj.close_connection
+        expect(obj.intentionally_closed_connection).to be_truthy
+      end
+    end
   end
 
   describe "unbind" do
+    context "when connection was intentionally closed" do
+      # @todo: Allow for dropped connections
+    end
 
+    it "logs a message to stdout" do
+      spec_socket_server do
+        obj = subject.new(signature)
+        expect{ obj.unbind }.to output(
+          "-- someone disconnected from the echo server!\n"
+        ).to_stdout
+      end
+    end
+
+    it "calls to the game to remove this connection from the connection_pool" do
+      spec_socket_server do
+        obj = subject.new(signature)
+        expect(Game.instance).to receive(:remove_connection_from_pool).with(obj)
+        obj.unbind
+      end
+    end
   end
 end
