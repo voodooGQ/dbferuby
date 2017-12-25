@@ -1,14 +1,20 @@
 example_id                                  | status | run_time        |
 ------------------------------------------- | ------ | --------------- |
-./spec/lib/commands/chat_spec.rb[1:1:1:1]   | passed | 0.04591 seconds |
-./spec/lib/commands/quit_spec.rb[1:1:1:1]   | passed | 0.00388 seconds |
-./spec/lib/connection_pool_spec.rb[1:1:1:1] | passed | 0.00159 seconds |
-./spec/lib/connection_pool_spec.rb[1:1:1:2] | passed | 0.00161 seconds |
-./spec/lib/connection_pool_spec.rb[1:1:2:1] | passed | 0.00013 seconds |
-./spec/lib/connection_pool_spec.rb[1:1:2:2] | passed | 0.00008 seconds |
-./spec/lib/connection_pool_spec.rb[1:1:3:1] | passed | 0.00146 seconds |
-./spec/lib/game_spec.rb[1:1:1:1]            | passed | 0.00043 seconds |
-./spec/lib/game_spec.rb[1:1:2:1]            | passed | 0.00041 seconds |
-./spec/lib/game_spec.rb[1:1:3:1]            | passed | 0.00057 seconds |
-./spec/lib/game_spec.rb[1:1:4:1]            | passed | 0.00041 seconds |
-./spec/lib/game_spec.rb[1:1:5:1]            | passed | 0.00039 seconds |
+./spec/lib/commands/chat_spec.rb[1:1:1:1]   | passed | 0.02866 seconds |
+./spec/lib/commands/quit_spec.rb[1:1:1:1]   | passed | 0.0033 seconds  |
+./spec/lib/connection_pool_spec.rb[1:1:1:1] | passed | 0.00164 seconds |
+./spec/lib/connection_pool_spec.rb[1:1:1:2] | passed | 0.00155 seconds |
+./spec/lib/connection_pool_spec.rb[1:1:2:1] | passed | 0.00011 seconds |
+./spec/lib/connection_pool_spec.rb[1:1:2:2] | passed | 0.00012 seconds |
+./spec/lib/connection_pool_spec.rb[1:1:3:1] | passed | 0.01498 seconds |
+./spec/lib/game_spec.rb[1:1:1:1]            | passed | 0.0004 seconds  |
+./spec/lib/game_spec.rb[1:1:2:1]            | passed | 0.00044 seconds |
+./spec/lib/game_spec.rb[1:1:3:1]            | passed | 0.00118 seconds |
+./spec/lib/game_spec.rb[1:1:4:1]            | passed | 0.00043 seconds |
+./spec/lib/game_spec.rb[1:1:5:1]            | passed | 0.0004 seconds  |
+./spec/lib/player_connection_spec.rb[1:1:1] | passed | 0.00212 seconds |
+./spec/lib/player_connection_spec.rb[1:2:1] | passed | 0.00057 seconds |
+./spec/lib/player_connection_spec.rb[1:2:2] | passed | 0.00059 seconds |
+./spec/lib/player_connection_spec.rb[1:2:3] | passed | 0.00096 seconds |
+./spec/lib/player_connection_spec.rb[1:2:4] | passed | 0.00065 seconds |
+./spec/lib/player_connection_spec.rb[1:3:1] | passed | 0.00051 seconds |
