@@ -2,10 +2,10 @@
 
 RSpec.shared_context "socket", shared_context: :meta_data do
   # Sanitize a mock game loop
-  def spec_socket_server(&block)
+  def spec_socket_server(debug: false, &block)
     game = Game.instance
 
-    SpecHelperFunctions.suppress_output do
+    SpecHelperFunctions.suppress_output(override: debug) do
       game.run do |s|
         yield(s)
         s.stop_event_loop
