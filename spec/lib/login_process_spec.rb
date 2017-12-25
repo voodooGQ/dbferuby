@@ -18,6 +18,7 @@ RSpec.describe LoginProcess, type: :TYPE do
     end
 
     describe "call" do
+      # veify_username
       describe "when player is not set" do
         it "calls locally to verify_username with the data sent" do
           spec_socket_server do
@@ -47,16 +48,56 @@ RSpec.describe LoginProcess, type: :TYPE do
             end
           end
         end
+
+        describe "when Player is not found by username" do
+          it "sends a propmpt to the player to try again" do
+            spec_socket_server do
+              obj = subject.new(build(:player_connection))
+
+              expect(obj.connection).to receive(:send_data).with(
+                "No user named foobarbaz exists. Please try again.\n"
+              )
+              obj.call("foobarbaz")
+            end
+          end
+        end
       end
 
+      # verify_password
       describe "when player is set" do
         it "calls locally to verify_password with the data sent" do
           spec_socket_server do
             obj = subject.new(build(:player_connection))
-            obj.instance_variable_set(:@player, build(:player))
+            obj.instance_variable_set(:@player, obj.connection.player)
 
             expect(obj).to receive(:verify_password).with("foo")
             obj.call("foo")
+          end
+        end
+
+        describe "when the password sent matches the player password" do
+          it "calls process_player on the connection with the player sent" do
+            spec_socket_server do
+              obj = subject.new(build(:player_connection))
+              obj.instance_variable_set(:@player, obj.connection.player)
+              expect(obj.connection).to receive(:process_player).with(
+                obj.connection.player
+              )
+              obj.call("abcd1234")
+            end
+          end
+        end
+
+        describe "when the password send does not match the player password" do
+          it "sends an incorrect password prompt to the player" do
+            spec_socket_server do
+              obj = subject.new(build(:player_connection))
+              obj.instance_variable_set(:@player, obj.connection.player)
+              expect(obj.connection).to receive(:send_data).with(
+                "Incorrect password. Please try again.\n"
+              )
+              obj.call("4321dcba")
+            end
           end
         end
       end
