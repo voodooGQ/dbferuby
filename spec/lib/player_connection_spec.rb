@@ -64,13 +64,49 @@ RSpec.describe PlayerConnection, type: [:socket, :connection] do
   end
 
   describe "receive_data" do
-    it "calls to the creation_processor when the new_character flag is set" do
-      spec_socket_server do
-        obj = subject.new(signature)
-        obj.new_character = true
+    context "new_character flag is set" do
+      it "calls to the creation_processor" do
+        spec_socket_server do
+          obj = subject.new(signature)
+          obj.new_character = true
+          expect(obj.creation_processor).to receive(:call).with("foo")
+          obj.receive_data("foo")
+        end
+      end
+    end
 
-        expect(obj.creation_processor).to receive(:call).with("foo")
-        obj.receive_data("foo")
+    context "new_charcter flag is not set" do
+      context "no player is set" do
+        context "data passed in is 'new'" do
+          it "calls to the creation_processor" do
+            spec_socket_server do
+              obj = subject.new(signature)
+              expect(obj.creation_processor).to receive(:call).with("new")
+              obj.receive_data("new")
+            end
+          end
+        end
+
+        context "data is anything other than 'new'" do
+          it "calls to the login_processor" do
+            spec_socket_server do
+              obj = subject.new(signature)
+              expect(obj.login_processor).to receive(:call).with("foo")
+              obj.receive_data("foo")
+            end
+          end
+        end
+      end
+
+      context "player is set" do
+        it "calls to the command_parser" do
+          spec_socket_server do
+            obj = subject.new(signature)
+            obj.process_player(build(:player))
+            expect(obj.command_parser).to receive(:call).with("foo")
+            obj.receive_data("foo")
+          end
+        end
       end
     end
   end

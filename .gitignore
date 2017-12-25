@@ -2,4 +2,5 @@ Gemfile.lock
 tags
 *.db
 tmp/*
+.rspec_status
 
