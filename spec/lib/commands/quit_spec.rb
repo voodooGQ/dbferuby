@@ -12,7 +12,7 @@ module Commands
       describe "call" do
         it "removes the initiator from the connection pool" do
           spec_socket_server do |server|
-            initiator = create_connection
+            initiator = build(:player_connection)
             expect(@game.connection_count).to eq(1)
 
             stub_connection_unbind(initiator)

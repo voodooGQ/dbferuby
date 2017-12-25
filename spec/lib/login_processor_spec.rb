@@ -38,7 +38,7 @@ RSpec.describe LoginProcess, type: :TYPE do
           end
 
           it "sends a password prompt to the connection" do
-            spec_socket_server(debug: true) do
+            spec_socket_server do
               player = create(:player)
               obj = subject.new(build(:player_connection))
 

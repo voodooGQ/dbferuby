@@ -12,7 +12,7 @@ module Commands
       describe "call" do
         it "sends a message to all the players in the game" do
           spec_socket_server do |server|
-            @initiator = create_connection
+            @initiator = build(:player_connection)
             populate_connection_pool
 
             @game.players.each do |p|

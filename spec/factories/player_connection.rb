@@ -3,6 +3,7 @@
 FactoryBot.define do
   factory :player_connection, class: PlayerConnection do
     sequence :sig { |s| s }
+    player { create(:player) }
 
     initialize_with{ new(sig) }
 
@@ -15,8 +16,6 @@ FactoryBot.define do
       end
     end
 
-    #after(:build) do
-      #process_player(create(:player))
-    #end
+    after(:build) { |conn| conn.process_player(conn.player) }
   end
 end
