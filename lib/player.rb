@@ -11,14 +11,6 @@ class Player < ActiveRecord::Base
     in: VALID_RACES, message: "%{value} is not a valid race"
   }
 
-  establish_connection(adapter: "sqlite3", database: "dbfe.db")
-  connection.create_table(:players, force: true) do |t|
-    t.string :name
-    t.string :password
-    t.string :race
-    t.timestamps
-  end unless table_exists?
-
   def method_missing(m, *args, &block)
     @connection.send(m, *args, &block)
   end

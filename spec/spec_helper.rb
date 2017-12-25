@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "bundler/setup"
+require "database_cleaner"
 require "pry"
 require "pry-byebug"
 require "factory_bot"
@@ -43,6 +44,10 @@ RSpec.configure do |config|
   config.mock_with :rspec do |mocks|
     # Don't allow mocking on nil items. Create a non-nil stub/mock in it's place
     mocks.allow_message_expectations_on_nil = false
+  end
+
+  config.after :suite do
+    DatabaseCleaner.clean_with(:truncation)
   end
 
   # include FactoryBot
