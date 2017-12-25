@@ -26,6 +26,27 @@ RSpec.describe LoginProcess, type: :TYPE do
             obj.call("foo")
           end
         end
+
+        describe "when Player is found by username" do
+          it "sets the player variable" do
+            spec_socket_server do
+              player = create(:player)
+              obj = subject.new(build(:player_connection))
+              obj.call(player.name)
+              expect(obj.player).to eq(player)
+            end
+          end
+
+          it "sends a password prompt to the connection" do
+            spec_socket_server(debug: true) do
+              player = create(:player)
+              obj = subject.new(build(:player_connection))
+
+              expect(obj.connection).to receive(:send_data).with("Password?\n")
+              obj.call(player.name)
+            end
+          end
+        end
       end
 
       describe "when player is set" do
