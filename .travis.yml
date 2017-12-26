@@ -1,3 +1,11 @@
 language: ruby
-# Do not add ruby-version here, change in .ruby-version file
-
+services:
+  - postgresql
+before_script:
+  - psql -c 'create database dbfe_test;' -U postgres
+  - cp db/config.yml config/database.yml
+test:
+  adapter: postgresql
+  database: dbfe_test
+addons:
+  postgresql: "9.6"
