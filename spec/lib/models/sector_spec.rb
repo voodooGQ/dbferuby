@@ -2,7 +2,7 @@
 require "spec_helper"
 require "colorize"
 
-RSpec.describe Area, type: [:models] do
+RSpec.describe Sector, type: [:models] do
   let(:subject) { described_class }
 
   describe "instance_methods" do
