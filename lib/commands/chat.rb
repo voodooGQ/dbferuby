@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require "commands/command_base"
 
 module Commands
   class Chat < CommandBase
