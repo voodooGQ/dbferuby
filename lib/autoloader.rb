@@ -8,7 +8,7 @@ Dotenv.load
 
 env = ENV["RUBY_ENV"] || "development"
 
-ActiveRecord::Base.logger = Logger.new("log/#{env}.log")
+ActiveRecord::Base.logger = Logger.new("log/#{env}.log") if env != "test"
 configuration = YAML::load(IO.read('db/config.yml'))
 ActiveRecord::Base.establish_connection(configuration["#{env}"])
 
