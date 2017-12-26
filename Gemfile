@@ -14,4 +14,4 @@ gem "pg"
 gem "standalone_migrations", "~> 5.2.3"
 gem "database_cleaner", "~> 1.6.1"
 gem "dotenv"
-
+gem "colorize"

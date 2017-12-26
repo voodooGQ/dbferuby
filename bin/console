@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+require "bundler"
+
+# Require the development libs via Bundler
+Bundler.require(:default, :development)
+
+require_relative "../lib/autoloader.rb"
+require "pry"
+require "dotenv"
+
+Dotenv.load
+
+Pry.start(__FILE__)
