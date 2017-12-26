@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
-require_relative 'player'
-require_relative 'game'
-require_relative 'command_parser'
+require 'models/player'
+require 'game'
+require 'command_parser'
+require 'sequence_loops/creation_process'
+require 'sequence_loops/login_process'
 
 class PlayerConnection < EventMachine::Connection
   attr_accessor :player,

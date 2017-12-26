@@ -3,8 +3,8 @@
 require 'eventmachine'
 require 'singleton'
 require 'forwardable'
-require_relative 'connection_pool'
-require_relative 'player_connection'
+require 'connection_pool'
+require 'player_connection'
 
 class Game
   extend Forwardable
