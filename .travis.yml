@@ -2,8 +2,8 @@ language: ruby
 services:
   - postgresql
 before_script:
-  #- cp db/config.yml config/database.yml
   - psql -c 'create database dbfe_test;' -U postgres
+  - "rake db:migrate RAILS_ENV=test"
 test:
   adapter: postgresql
   database: dbfe_test
