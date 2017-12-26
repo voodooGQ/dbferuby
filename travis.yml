@@ -1,0 +1,3 @@
+language: ruby
+# Do not add ruby-version here, change in .ruby-version file
+
