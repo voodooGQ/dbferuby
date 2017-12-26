@@ -18,4 +18,8 @@ class Player < ActiveRecord::Base
   def respond_to_missing?(m, include_private = false)
     @connection.respond_to?(m, include_private) || super
   end
+
+  def self.race_list
+    VALID_RACES.join(", ")
+  end
 end

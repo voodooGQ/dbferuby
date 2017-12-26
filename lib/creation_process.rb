@@ -50,17 +50,18 @@ class CreationProcess
       @connection.send_data "The password confirmation you entered did not " \
         "match the first password entered. Please provide your password " \
         "again.\n"
+      @password = nil
     else
       @password_confirm = password
       @connection.send_data "What race is your character? Valid races are: " \
-        "#{Player::VALID_RACES.join(", ")}\n"
+        "#{Player.race_list}\n"
     end
   end
 
   def set_race(race)
     unless Player::VALID_RACES.include?(race.downcase)
       @connection.send_data "The race you selected is not available. " \
-        "Available races are: #{Player::VALID_RACES.join(', ')}"
+        "Available races are: #{Player.race_list}"
     else
       @race = race
       @connection.process_player(

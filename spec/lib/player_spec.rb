@@ -18,4 +18,9 @@ RSpec.describe Player, type: [:model] do
     end
   end
 
+  describe "class_methods" do
+    describe "race_list" do
+      it { expect(subject.race_list).to eq(subject::VALID_RACES.join(", ")) }
+    end
+  end
 end
