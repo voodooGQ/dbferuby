@@ -18,6 +18,8 @@ class CommandParser
     @player.send_data "\n>> "
   end
 
+  private
+
   def no_input
     @player.send_data "Please supply a command."
   end
