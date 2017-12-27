@@ -14,4 +14,20 @@ class Room < ActiveRecord::Base
       errors.add(:x_coord, "and Y coord already exist in Area (#{area.name})")
     end
   end
+
+  def self.create(override: false, **args, &block)
+    return super(args, &block) if override
+    puts "Only Area objects should create their own Room objects to ensure " \
+      "proper data integrity. You may pass an 'override' option set to true " \
+      "for this method to force a creation if you understand fully what you " \
+      "are doing."
+  end
+
+  def self.create!(override: false, **args, &block)
+    return super(args, &block) if override
+    puts "Only Area objects should create their own Room objects to ensure " \
+      "proper data integrity. You may pass an 'override' option set to true " \
+      "for this method to force a creation if you understand fully what you " \
+      "are doing."
+  end
 end
