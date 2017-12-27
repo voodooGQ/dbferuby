@@ -3,8 +3,10 @@ require "random-word"
 
 FactoryBot.define do
   factory :sector, class: Sector do
-    sequence(:name) {|n| Array.new(rand(1..3), RandomWord.noun.next).join("_") }
-    sequence(:character_code) { |n| (n + 33).char }
+    sequence(:name) do |n|
+      Array.new(rand(1..3), RandomWord.nouns.next).join("_")
+    end
+    sequence(:character_code) { |n| (n + 33).chr }
     symbol { "~" }
     color { "blue" }
     alternate_symbol { "-" }
