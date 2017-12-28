@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require "commands/command_base"
+require_relative "command_base"
 
 module Commands
   class Quit < CommandBase

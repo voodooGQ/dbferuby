@@ -2,8 +2,9 @@
 
 FactoryBot.define do
   factory :room, class: Room do
-    x_coord { 0 }
-    y_coord { 0 }
-    sector { create(:sector) }
+    sector { Sector.first || association(:sector) }
+    area { Area.first || association(:area) }
+    x_coord { area.rooms.flat_map(&:x_coord).max + 1 }
+    y_coord { area.rooms.flat_map(&:y_coord).min - 1 }
   end
 end
