@@ -26,7 +26,10 @@ RSpec.describe Room, type: [:models] do
         "created manually" do
         expect {
           subject.create(
-            x_coord: 0, y_coord: 0, sector: create(:sector), area: create(:area)
+            x_coord: 10001,
+            y_coord: 10001,
+            sector: create(:sector),
+            area: create(:area)
           )
         }.to raise_error{
           Errors::UnadvisedRoomCreation
@@ -41,7 +44,10 @@ RSpec.describe Room, type: [:models] do
         "created manually" do
         expect {
           subject.create!(
-            x_coord: 0, y_coord: 0, sector: create(:sector), area: create(:area)
+            x_coord: 10002,
+            y_coord: 10002,
+            sector: create(:sector),
+            area: create(:area)
           )
         }.to raise_error{
           Errors::UnadvisedRoomCreation

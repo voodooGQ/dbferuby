@@ -29,44 +29,30 @@ class Area < ActiveRecord::Base
           y_coord: grid_coord_index + y_index,
           x_coord: grid_coord_index + x_index,
           area: self,
-          sector: Sector.find(1)
+          sector: Sector.first
         )
       end
     end
   end
 
   def rooms
-    # Memoize
     @rooms ||= super
   end
 
-  def coord_indexes
-    grid_coord_index = dimension.divmod(2).first
-    { min: -grid_coord_index, max: grid_coord_index }
+  def coord_index_range
+    zero_offset = dimension.divmod(2).first
+    (-(zero_offset)..zero_offset)
   end
 
-  def display_area_map(center_room_id, y_viewport = 11, x_viewport = 25)
-    y_viewport_range = y_viewport.divmod(2).first
-    x_viewport_range = x_viewport.divmod(2).first
-    center_room = rooms.detect{ |room| room.id == center_room_id }
-    coord_range = (coord_indexes[:min]..coord_indexes[:max]).to_a
+  def center_room
+    rooms.detect{|r| r.y_coord == 0 && r.x_coord == 0}
+  end
 
-    y_range = coord_range.rotate(
-      coord_range.index(center_room.y_coord) - y_viewport_range
-    )[0..(y_viewport-1)]
+  def room_by_coords(x = 0, y = 0)
+    rooms.detect{|room| room.x_coord == x && room.y_coord == y}
+  end
 
-    x_range = coord_range.rotate(
-      coord_range.index(center_room.x_coord) - x_viewport_range
-    )[0..(x_viewport-1)]
-
-    String.new.tap do |map|
-      y_range.each do |row|
-        x_range.each do |column|
-          room = rooms.detect{|r| r.y_coord == row && r.x_coord == column}
-          map << room.sector.symbol.colorize(room.sector.color)
-        end
-        map << "\n"
-      end
-    end
+  def map
+    @map ||= Map.new(self)
   end
 end
