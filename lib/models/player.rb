@@ -24,7 +24,7 @@ class Player < ActiveRecord::Base
     in: VALID_RACES, message: "%{value} is not a valid race"
   }
 
-  belongs_to :room, required: true
+  belongs_to :room, required: true, autosave: true
 
   def connected?
     !!@connection

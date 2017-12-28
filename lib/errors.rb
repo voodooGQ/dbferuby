@@ -4,4 +4,5 @@
 module Errors
   class Base < StandardError; end
   class UnadvisedRoomCreation < Base; end
+  class MissingRoom < Base; end
 end
