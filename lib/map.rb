@@ -26,6 +26,8 @@ class Map
   def centered_coordinates(center_coord, view_range)
     offset = view_range.divmod(2).first
     coords = coordinate_index_array
+    # Make sure we have enough items in the coord array
+    coords.push(*coords) while coords.count < view_range
     coords.rotate(coords.index(center_coord) - offset)[0..(view_range - 1)]
   end
 end
