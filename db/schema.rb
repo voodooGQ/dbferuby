@@ -10,10 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171225041035) do
+ActiveRecord::Schema.define(version: 20171228025647) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "areas", force: :cascade do |t|
+    t.string "name"
+    t.integer "dimension", default: 15, null: false
+  end
 
   create_table "players", force: :cascade do |t|
     t.string "name"
@@ -21,6 +26,22 @@ ActiveRecord::Schema.define(version: 20171225041035) do
     t.string "race"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "rooms", force: :cascade do |t|
+    t.integer "x_coord"
+    t.integer "y_coord"
+    t.integer "sector_id"
+    t.integer "area_id"
+  end
+
+  create_table "sectors", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "character_code", limit: 1, null: false
+    t.string "symbol"
+    t.string "color"
+    t.string "alternate_symbol"
+    t.string "alternate_color"
   end
 
 end

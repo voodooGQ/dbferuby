@@ -1,4 +1,17 @@
 # frozen_string_literal: true
+#
+# == Schema Information
+#
+# Table name: players
+#
+#  id         :integer          not null, primary key
+#  name       :string
+#  password   :string
+#  race       :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
 require "active_record"
 
 class Player < ActiveRecord::Base
