@@ -21,7 +21,34 @@ RSpec.describe Room, type: [:models] do
   end
 
   describe "class_methods" do
+    describe "create" do
+      it "overrides the method to raise an error that it should not be " \
+        "created manually" do
+        expect {
+          subject.create(
+            x_coord: 0, y_coord: 0, sector: create(:sector), area: create(:area)
+          )
+        }.to raise_error{
+          Errors::UnadvisedRoomCreation
+        }.with_message(
+          Room::CREATION_ERROR_MSG
+        )
+      end
+    end
 
+    describe "create!" do
+      it "overrides the method to raise an error that it should not be " \
+        "created manually" do
+        expect {
+          subject.create!(
+            x_coord: 0, y_coord: 0, sector: create(:sector), area: create(:area)
+          )
+        }.to raise_error{
+          Errors::UnadvisedRoomCreation
+        }.with_message(
+          Room::CREATION_ERROR_MSG
+        )
+      end
+    end
   end
-
 end

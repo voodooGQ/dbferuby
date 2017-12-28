@@ -2,6 +2,12 @@
 require "active_record"
 
 class Room < ActiveRecord::Base
+  CREATION_ERROR_MSG = <<-MSG
+    Only Area objects should create their own Room objects to ensure proper
+    data integrity. You may pass an 'override' option set to true for this
+    method to force a creation "if you understand fully what you are doing.
+  MSG
+
   validate :unique_coordinates_by_area
   validates :x_coord, presence: true
   validates :y_coord, presence: true
@@ -17,17 +23,11 @@ class Room < ActiveRecord::Base
 
   def self.create(override: false, **args, &block)
     return super(args, &block) if override
-    puts "Only Area objects should create their own Room objects to ensure " \
-      "proper data integrity. You may pass an 'override' option set to true " \
-      "for this method to force a creation if you understand fully what you " \
-      "are doing."
+    raise Errors::UnadvisedRoomCreation, CREATION_ERROR_MSG
   end
 
   def self.create!(override: false, **args, &block)
     return super(args, &block) if override
-    puts "Only Area objects should create their own Room objects to ensure " \
-      "proper data integrity. You may pass an 'override' option set to true " \
-      "for this method to force a creation if you understand fully what you " \
-      "are doing."
+    raise Errors::UnadvisedRoomCreation, CREATION_ERROR_MSG
   end
 end
