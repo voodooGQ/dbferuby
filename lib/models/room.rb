@@ -1,4 +1,16 @@
 # frozen_string_literal: true
+#
+# == Schema Information
+#
+# Table name: rooms
+#
+#  id        :integer          not null, primary key
+#  x_coord   :integer
+#  y_coord   :integer
+#  sector_id :integer
+#  area_id   :integer
+#
+
 require "active_record"
 
 class Room < ActiveRecord::Base

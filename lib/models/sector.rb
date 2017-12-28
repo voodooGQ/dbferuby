@@ -1,4 +1,18 @@
 # frozen_string_literal: true
+#
+# == Schema Information
+#
+# Table name: sectors
+#
+#  id               :integer          not null, primary key
+#  name             :string           not null
+#  character_code   :string(1)        not null
+#  symbol           :string
+#  color            :string
+#  alternate_symbol :string
+#  alternate_color  :string
+#
+
 require "active_record"
 require "colorize"
 
