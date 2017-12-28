@@ -28,7 +28,9 @@ class Room < ActiveRecord::Base
   belongs_to :sector, required: true
 
   def unique_coordinates_by_area
-    if area.rooms.where("x_coord = ? AND y_coord = ?", x_coord, y_coord).any?
+    rooms = area.rooms.where("x_coord = ? AND y_coord = ?", x_coord, y_coord)
+
+    if rooms.any? && !rooms.include?(self)
       errors.add(:x_coord, "and Y coord already exist in Area (#{area.name})")
     end
   end
