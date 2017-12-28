@@ -27,6 +27,8 @@ class Room < ActiveRecord::Base
   belongs_to :area, required: true
   belongs_to :sector, required: true
 
+  has_many :occupants, foreign_key: "room_id", class_name: "Player"
+
   def unique_coordinates_by_area
     rooms = area.rooms.where("x_coord = ? AND y_coord = ?", x_coord, y_coord)
 

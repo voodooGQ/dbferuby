@@ -24,6 +24,12 @@ class Player < ActiveRecord::Base
     in: VALID_RACES, message: "%{value} is not a valid race"
   }
 
+  belongs_to :room, required: true
+
+  def connected?
+    !!@connection
+  end
+
   def method_missing(m, *args, &block)
     @connection.send(m, *args, &block)
   end
