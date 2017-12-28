@@ -9,8 +9,14 @@ class Map
     String.new.tap do |map|
       centered_coordinates(center_room.y_coord, height).each do |y|
         centered_coordinates(center_room.x_coord, width).each do |x|
-          sector = @area.room_by_coords(x, y).sector
-          map << sector.symbol.colorize(sector.color)
+          room = @area.room_by_coords(x, y)
+          sector = room.sector
+
+          map << if room == center_room
+            "*".colorize(:yellow).blink
+          else
+            sector.symbol.colorize(sector.color)
+          end
         end
         map << "\n"
       end
