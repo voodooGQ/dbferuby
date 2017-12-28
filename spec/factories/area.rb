@@ -6,7 +6,9 @@ FactoryBot.define do
     rooms { [] }
     after(:create) do |area|
       ((rand(10..20) * 2) + 1).times do |index|
-        area.rooms << create(:room, x_coord: 0 + index, y_coord: 0 - index, area: area)
+        area.rooms << create(
+          :room, x_coord: 0 + index, y_coord: 0 - index, area: area
+        )
       end
     end
   end
