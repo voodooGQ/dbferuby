@@ -3,6 +3,19 @@
 class CommandParser
   attr_reader :player
 
+  GLOBAL_ALIASES = {
+    'n'     => 'north',
+    's'     => 'south',
+    'e'     => 'east',
+    'w'     => 'west',
+    'ne'    => 'northeast',
+    'nw'    => 'northwest',
+    'se'    => 'southeast',
+    'sw'    => 'southwest',
+    'l'     => 'look',
+    'exit'  => 'quit'
+  }
+
   def initialize(player)
     @player = player
   end
@@ -10,6 +23,8 @@ class CommandParser
   def call(data)
     begin
       command, *args = data.chomp.split(" ")
+      # Check the global aliases
+      command = GLOBAL_ALIASES.dig(command) || command
       klass = Object.const_get("Commands::#{command.capitalize}")
       klass.new(@player).call(args)
     rescue NameError

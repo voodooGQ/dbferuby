@@ -6,7 +6,7 @@ RSpec.shared_context "socket", shared_context: :meta_data do
     game = Game.instance
 
     SpecHelperFunctions.suppress_output(override: debug) do
-      game.run do |s|
+      game.run(port: "9017") do |s|
         yield(s)
         s.stop_event_loop
       end
@@ -24,5 +24,27 @@ RSpec.shared_context "socket", shared_context: :meta_data do
         connection.unbind
       end
     )
+  end
+
+  def expect_movement(subject, dest_x, dest_y)
+    area = create(:area) unless Area.first
+    connection = build(:player_connection)
+    player = connection.player
+    player.room = Room.where("x_coord = ? AND y_coord = ?", 0, 0).first
+
+    expect(player.room.x_coord).to be(0)
+    expect(player.room.y_coord).to be(0)
+
+    subject.new(player).call
+
+    expect(player.room.x_coord).to be(dest_x)
+    expect(player.room.y_coord).to be(dest_y)
+  end
+
+  def spherical_movement_setup
+    @area = Area.first || create(:area)
+    @connection = build(:player_connection)
+    @player = @connection.player
+    @coord_range = @area.coord_index_range
   end
 end
