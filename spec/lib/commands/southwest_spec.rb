@@ -8,7 +8,7 @@ module Commands
     describe "instance_methods" do
       describe "call" do
         it "moves the character to the correct room" do
-          spec_socket_server { movement_command_spec(subject, -1, 1) }
+          spec_socket_server { expect_movement(subject, -1, 1) }
         end
       end
     end

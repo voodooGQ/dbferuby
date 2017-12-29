@@ -12,14 +12,12 @@ class Movement
       player.room = destination
       player.save!
     else
-      raise Errors::MissingRoom, "#{dest_x}, #{dest_y} coordinates do not " \
-        "exist in area #{area.name}"
+      player.send_data "You can't go that way!"
     end
   end
 
   private
 
-  # @TODO: Fix
   def self.coord_loop(dest_coord, index_range)
     if dest_coord >= index_range.min && dest_coord <= index_range.max
       return dest_coord
