@@ -6,7 +6,7 @@ RSpec.shared_context "socket", shared_context: :meta_data do
     game = Game.instance
 
     SpecHelperFunctions.suppress_output(override: debug) do
-      game.run do |s|
+      game.run(port: "9017") do |s|
         yield(s)
         s.stop_event_loop
       end

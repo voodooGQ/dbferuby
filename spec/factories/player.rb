@@ -9,5 +9,6 @@ FactoryBot.define do
       index = rand(0..(Player::VALID_RACES.length - 1))
       Player::VALID_RACES[index]
     end
+    room { Room.first || association(:room) }
   end
 end
