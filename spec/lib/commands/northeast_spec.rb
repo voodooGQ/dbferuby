@@ -13,21 +13,20 @@ module Commands
       end
 
       it "moves spherically" do
-          spec_socket_server do
-            spherical_movement_setup
+        spec_socket_server do
+          spherical_movement_setup
 
-            @player.room = Room.where(
-              "x_coord = ? AND y_coord = ?", @coord_range.max, @coord_range.min,
-            ).first
+          @player.room = Room.where(
+            "x_coord = ? AND y_coord = ?", @coord_range.max, @coord_range.min,
+          ).first
 
-            expect(@player.room.x_coord).to be(@coord_range.max)
-            expect(@player.room.y_coord).to be(@coord_range.min)
-            subject.new(@player).call
-            expect(@player.room.x_coord).to be(@coord_range.min)
-            expect(@player.room.y_coord).to be(@coord_range.max)
-          end
+          expect(@player.room.x_coord).to be(@coord_range.max)
+          expect(@player.room.y_coord).to be(@coord_range.min)
+          subject.new(@player).call
+          expect(@player.room.x_coord).to be(@coord_range.min)
+          expect(@player.room.y_coord).to be(@coord_range.max)
         end
-
+      end
     end
   end
 end
