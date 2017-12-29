@@ -26,11 +26,12 @@ class CommandParser
       # Check the global aliases
       command = GLOBAL_ALIASES.dig(command) || command
       klass = Object.const_get("Commands::#{command.capitalize}")
-      klass.new(@player).call(args)
+      obj = klass.new(@player)
     rescue NameError
-      command ? command_not_found(command) : no_input
+      return command ? command_not_found(command) : no_input
     end
-    @player.send_data "\n>> "
+    return command_not_found(command) unless obj.initiator_is_authorized?
+    obj.call(args)
   end
 
   private

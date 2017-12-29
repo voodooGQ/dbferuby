@@ -42,6 +42,7 @@ class PlayerConnection < EventMachine::Connection
       @login_processor.call(data)
     else
       @command_parser.call(data)
+      @player.send_data "\n>> "
     end
   end
 

@@ -25,11 +25,20 @@ class Player < ActiveRecord::Base
   }
 
   belongs_to :room, required: true, autosave: true
+  has_one :area, through: :room
 
   [:admin?, :is_admin?].each{ |m| alias_attribute m, :admin }
 
   def connected?
     !!@connection
+  end
+
+  def roommates
+    room.connected_occupants.reject{|o| o == self}
+  end
+
+  def areamates
+    Game.instance.players.select{|p| p.area == area}
   end
 
   def method_missing(m, *args, &block)

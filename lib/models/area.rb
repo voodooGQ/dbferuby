@@ -19,7 +19,6 @@ class Area < ActiveRecord::Base
 
   after_create :create_rooms
 
-
   def rooms
     @rooms ||= super
   end

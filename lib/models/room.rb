@@ -29,6 +29,14 @@ class Room < ActiveRecord::Base
 
   has_many :occupants, foreign_key: "room_id", class_name: "Player"
 
+  def connected_occupants
+    connections = Game.instance.players
+
+    occupants.flat_map do |player|
+      connections.detect{|c| c.id == player.id}
+    end.compact
+  end
+
   def unique_coordinates_by_area
     rooms = area.rooms.where("x_coord = ? AND y_coord = ?", x_coord, y_coord)
 
