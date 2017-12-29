@@ -4,12 +4,16 @@ class CommandParser
   attr_reader :player
 
   GLOBAL_ALIASES = {
-    'n' => 'north',
-    's' => 'south',
-    'e' => 'east',
-    'w' => 'west',
-    'l' => 'look',
-    'exit' => 'quit'
+    'n'     => 'north',
+    's'     => 'south',
+    'e'     => 'east',
+    'w'     => 'west',
+    'ne'    => 'northeast',
+    'nw'    => 'northwest',
+    'se'    => 'southeast',
+    'sw'    => 'southwest',
+    'l'     => 'look',
+    'exit'  => 'quit'
   }
 
   def initialize(player)

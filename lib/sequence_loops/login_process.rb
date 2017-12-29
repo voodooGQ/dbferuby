@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require_relative "../commands/look"
 
 class LoginProcess
   attr_accessor :new_character
@@ -37,6 +38,7 @@ class LoginProcess
   def verify_password(password)
     if @player.password == password
       @connection.process_player(@player)
+      Commands::Look.new(@player).call
     else
       @connection.send_data "Incorrect password. Please try again.\n"
     end
