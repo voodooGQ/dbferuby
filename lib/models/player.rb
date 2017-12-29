@@ -26,6 +26,8 @@ class Player < ActiveRecord::Base
 
   belongs_to :room, required: true, autosave: true
 
+  [:admin?, :is_admin?].each{ |m| alias_attribute m, :admin }
+
   def connected?
     !!@connection
   end
