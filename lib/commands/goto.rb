@@ -4,13 +4,13 @@ require_relative "command_base"
 module Commands
   class Goto < CommandBase
     def call(args)
-      x, y, area = args
+      x, y, area = args.split
 
       area_dest = @initiator.area
 
       if area and
           !(area_dest = Area.where("lower(name) = ?", area.downcase).first)
-        return @initiator.send "The planet #{area} does not exist."
+        return @initiator.send_data "The planet #{area} does not exist."
       end
 
       unless room_dest = area_dest.room_by_coords(x.to_i, y.to_i)

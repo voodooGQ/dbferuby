@@ -28,7 +28,7 @@ RSpec.shared_context "socket", shared_context: :meta_data do
 
   def expect_movement(subject, dest_x, dest_y)
     movement_setup
-    @player.room = Room.where("x_coord = ? AND y_coord = ?", 0, 0).first
+    send_player_to_area_center(@player)
 
     expect(@player.room.x_coord).to be(0)
     expect(@player.room.y_coord).to be(0)
@@ -44,5 +44,9 @@ RSpec.shared_context "socket", shared_context: :meta_data do
     @connection = build(:player_connection)
     @player = @connection.player
     @coord_range = @area.coord_index_range
+  end
+
+  def send_player_to_area_center(player)
+    player.room = Room.where("x_coord = ? AND y_coord = ?", 0, 0).first
   end
 end

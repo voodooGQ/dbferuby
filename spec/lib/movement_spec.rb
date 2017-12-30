@@ -8,8 +8,9 @@ RSpec.describe Movement, type: [:service] do
   describe "class_methods" do
     describe "linear" do
       it "returns the room object" do
-        spec_socket_server do
+        spec_socket_server(debug: true) do
           player = create(:player)
+          send_player_to_area_center(player)
           expect(subject.linear(player, x: 1, y: 1)).to eq(
             player.area.rooms.where(
               "x_coord = ? AND y_coord = ?",
