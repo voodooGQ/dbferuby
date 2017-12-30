@@ -42,7 +42,7 @@ class Player < ActiveRecord::Base
   end
 
   def areamates
-    Game.instance.players.select{|p| p.area == area}
+    Game.instance.players.select{|p| p.area == area && p != self}
   end
 
   def method_missing(m, *args, &block)
