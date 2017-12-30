@@ -25,9 +25,13 @@ class Player < ActiveRecord::Base
   }
 
   belongs_to :room, required: true, autosave: true
-  has_one :area, through: :room
 
   [:admin?, :is_admin?].each{ |m| alias_attribute m, :admin }
+
+  # Through relationship is significantly slower
+  def area
+    room.area
+  end
 
   def connected?
     !!@connection

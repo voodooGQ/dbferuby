@@ -10,5 +10,6 @@ FactoryBot.define do
       Player::VALID_RACES[index]
     end
     room { Room.first || association(:room) }
+    admin { false }
   end
 end
