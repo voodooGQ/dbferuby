@@ -26,8 +26,23 @@ class Player < ActiveRecord::Base
 
   belongs_to :room, required: true, autosave: true
 
+  [:admin?, :is_admin?].each{ |m| alias_attribute m, :admin }
+
+  # Through relationship is significantly slower
+  def area
+    room.area
+  end
+
   def connected?
     !!@connection
+  end
+
+  def roommates
+    room.connected_occupants.reject{|o| o == self}
+  end
+
+  def areamates
+    Game.instance.players.select{|p| p.area == area && p != self}
   end
 
   def method_missing(m, *args, &block)

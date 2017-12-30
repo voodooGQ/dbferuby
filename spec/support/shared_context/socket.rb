@@ -27,24 +27,48 @@ RSpec.shared_context "socket", shared_context: :meta_data do
   end
 
   def expect_movement(subject, dest_x, dest_y)
-    area = create(:area) unless Area.first
-    connection = build(:player_connection)
-    player = connection.player
-    player.room = Room.where("x_coord = ? AND y_coord = ?", 0, 0).first
+    movement_setup
+    send_player_to_area_center(@player)
 
-    expect(player.room.x_coord).to be(0)
-    expect(player.room.y_coord).to be(0)
+    expect(@player.room.x_coord).to be(0)
+    expect(@player.room.y_coord).to be(0)
 
-    subject.new(player).call
+    subject.new(@player).call
 
-    expect(player.room.x_coord).to be(dest_x)
-    expect(player.room.y_coord).to be(dest_y)
+    expect(@player.room.x_coord).to be(dest_x)
+    expect(@player.room.y_coord).to be(dest_y)
   end
 
-  def spherical_movement_setup
+  def expect_movement_messages(subject, exit_dir: "East", enter_dir: "West")
+    movement_setup
+    player2 = build(:player_connection).player
+    player3 = build(:player_connection).player
+
+    # Get the third player in the destination room
+    send_player_to_area_center(player3)
+    subject.new(player3).call
+
+    send_player_to_area_center(@player)
+    send_player_to_area_center(player2)
+
+    expect(player2).to receive(:send_data).with(
+      "\n#{@player.name} exits #{exit_dir}.\n"
+    )
+    expect(player3).to receive(:send_data).with(
+      "\n#{@player.name} enters from the #{enter_dir}.\n"
+    )
+    subject.new(@player).call
+  end
+
+  def movement_setup
     @area = Area.first || create(:area)
     @connection = build(:player_connection)
     @player = @connection.player
     @coord_range = @area.coord_index_range
+  end
+
+  def send_player_to_area_center(player)
+    player.room = Room.where("x_coord = ? AND y_coord = ?", 0, 0).first
+    player.save!
   end
 end

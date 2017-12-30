@@ -11,9 +11,29 @@ module Commands
           spec_socket_server { expect_movement(subject, 0, -1) }
         end
 
+        it "warns the player when they can't go in that direction" do
+          spec_socket_server do
+            player = build(:player_connection).player
+
+            allow(Movement).to receive(:linear).and_return(nil)
+            expect(player).to receive(:send_data).and_return(
+              "You can't go that way!\n"
+            )
+            subject.new(player).call
+          end
+        end
+
+        it "sends proper messages to the roommates of the player" do
+          spec_socket_server do
+            expect_movement_messages(
+              subject, exit_dir: "North", enter_dir: "South"
+            )
+          end
+        end
+
         it "moves spherically" do
           spec_socket_server do
-            spherical_movement_setup
+            movement_setup
 
             @player.room = Room.where(
               "x_coord = ? AND y_coord = ?", 0, @coord_range.min,

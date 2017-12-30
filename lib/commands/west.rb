@@ -1,11 +1,10 @@
-# frozen_string_literal: true
-require_relative "command_base"
+ # frozen_string_literal: true
+require_relative "movement_base"
 
 module Commands
-  class West < CommandBase
+  class West < MovementBase
     def call(*args)
-      Movement.call(@initiator, x: -1)
-      Look.new(@initiator).call
+      process_move(x: -1, exit_dir: "West", enter_dir: "East")
     end
   end
 end
