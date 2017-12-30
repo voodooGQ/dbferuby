@@ -27,21 +27,19 @@ RSpec.shared_context "socket", shared_context: :meta_data do
   end
 
   def expect_movement(subject, dest_x, dest_y)
-    area = create(:area) unless Area.first
-    connection = build(:player_connection)
-    player = connection.player
-    player.room = Room.where("x_coord = ? AND y_coord = ?", 0, 0).first
+    movement_setup
+    @player.room = Room.where("x_coord = ? AND y_coord = ?", 0, 0).first
 
-    expect(player.room.x_coord).to be(0)
-    expect(player.room.y_coord).to be(0)
+    expect(@player.room.x_coord).to be(0)
+    expect(@player.room.y_coord).to be(0)
 
-    subject.new(player).call
+    subject.new(@player).call
 
-    expect(player.room.x_coord).to be(dest_x)
-    expect(player.room.y_coord).to be(dest_y)
+    expect(@player.room.x_coord).to be(dest_x)
+    expect(@player.room.y_coord).to be(dest_y)
   end
 
-  def spherical_movement_setup
+  def movement_setup
     @area = Area.first || create(:area)
     @connection = build(:player_connection)
     @player = @connection.player

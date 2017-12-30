@@ -14,7 +14,7 @@ module Commands
 
       it "moves spherically" do
         spec_socket_server do
-          spherical_movement_setup
+          movement_setup
 
           @player.room = Room.where(
             "x_coord = ? AND y_coord = ?", @coord_range.max, @coord_range.min,
