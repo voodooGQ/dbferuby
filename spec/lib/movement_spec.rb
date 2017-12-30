@@ -6,13 +6,17 @@ RSpec.describe Movement, type: [:service] do
   let(:subject) { described_class }
 
   describe "class_methods" do
-    describe "call" do
-      it "sends a message to the user informing they can't go that direction" do
+    describe "linear" do
+      it "returns the room object" do
         spec_socket_server do
           player = create(:player)
-          allow(player.area).to receive(:room_by_coords).and_return(nil)
-          expect(player).to receive(:send_data).with("You can't go that way!")
-          subject.call(player, x:1, y:1)
+          expect(subject.linear(player, x: 1, y: 1)).to eq(
+            player.area.rooms.where(
+              "x_coord = ? AND y_coord = ?",
+              player.room.x_coord + 1,
+              player.room.y_coord + 1
+            ).first
+          )
         end
       end
     end

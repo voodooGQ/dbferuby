@@ -29,7 +29,7 @@ class Area < ActiveRecord::Base
   end
 
   def center_room
-    rooms.detect{|r| r.y_coord == 0 && r.x_coord == 0}
+    @center_room ||= rooms.detect{|r| r.y_coord == 0 && r.x_coord == 0}
   end
 
   def room_by_coords(x = 0, y = 0)
