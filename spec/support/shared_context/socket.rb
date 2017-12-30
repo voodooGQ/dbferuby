@@ -48,5 +48,6 @@ RSpec.shared_context "socket", shared_context: :meta_data do
 
   def send_player_to_area_center(player)
     player.room = Room.where("x_coord = ? AND y_coord = ?", 0, 0).first
+    player.save!
   end
 end

@@ -32,7 +32,7 @@ module Commands
     def process(room)
       @initiator.roommates.each do |p|
         p.send_data "\n#{@initiator.name} puts two fingers to their " \
-          "forehead and snaps out of existence."
+          "forehead and snaps out of existence.\n"
       end
 
       @initiator.room = room
