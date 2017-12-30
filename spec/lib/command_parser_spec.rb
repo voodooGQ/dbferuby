@@ -7,7 +7,7 @@ RSpec.describe CommandParser, type: [:parser] do
   let!(:mock_command) do
     module Commands
       class Mock < CommandBase
-        def call
+        def call(args)
           true
         end
       end
@@ -16,12 +16,12 @@ RSpec.describe CommandParser, type: [:parser] do
 
   describe "instance_methods" do
     describe "call" do
-      xit "instantiates the command class when one exists" do
+      it "instantiates the command class when one exists" do
         spec_socket_server(debug: true) do
           connection = build(:player_connection)
           obj = subject.new(connection.player)
-          expect(Commands::Chat).to receive(:new)
-          obj.call("chat test")
+          expect(Commands::Mock).to receive(:new).and_call_original
+          obj.call("mock test")
         end
       end
 
