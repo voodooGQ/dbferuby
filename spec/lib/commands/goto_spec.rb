@@ -57,6 +57,21 @@ module Commands
               end
             end
           end
+
+          context "when the room passed does not exist in the area" do
+            it "informs the user" do
+              spec_socket_server do
+                movement_setup
+
+                expect(@player).to receive(:send_data).with(
+                  "#{@area.name} does not have a room with coords 100000, " \
+                  "100000. Area coordinate ranges span from " \
+                  "#{@coord_range.min} to #{@coord_range.max}"
+                )
+                subject.new(@player).call("100000 100000")
+              end
+            end
+          end
         end
       end
     end

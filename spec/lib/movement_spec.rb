@@ -11,6 +11,7 @@ RSpec.describe Movement, type: [:service] do
         spec_socket_server(debug: true) do
           player = create(:player)
           send_player_to_area_center(player)
+
           expect(subject.linear(player, x: 1, y: 1)).to eq(
             player.area.rooms.where(
               "x_coord = ? AND y_coord = ?",
