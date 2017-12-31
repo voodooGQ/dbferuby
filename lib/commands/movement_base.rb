@@ -3,6 +3,22 @@ require_relative "command_base"
 
 module Commands
   class MovementBase < CommandBase
+    def help
+      syntax = "Syntax".colorize(:red)
+      <<~HELP
+        #{"Syntax".red}: north
+        #{"Syntax".red}: northeast
+        #{"Syntax".red}: northwest
+        #{"Syntax".red}: south
+        #{"Syntax".red}: southeast
+        #{"Syntax".red}: southwest
+        #{"Syntax".red}: east
+        #{"Syntax".red}: west
+
+        Use these commands to exit the current room in a particular direction.
+      HELP
+    end
+
     private
 
     def process_move(x: 0, y: 0, exit_dir: "East", enter_dir: "West")
