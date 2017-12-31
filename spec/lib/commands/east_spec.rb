@@ -47,6 +47,12 @@ module Commands
           end
         end
       end
+
+      describe "help" do
+        it "returns a help string" do
+          expect(subject.new(create(:player)).help).to be_a(String)
+        end
+      end
     end
   end
 end

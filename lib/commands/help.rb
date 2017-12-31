@@ -15,7 +15,7 @@ module Commands
 
       begin
         klass = Object.const_get("Commands::#{keyword.capitalize}")
-        obj = klass.new(@player)
+        obj = klass.new(@initiator)
       rescue NameError
         return command_not_found(keyword)
       end
@@ -62,9 +62,11 @@ module Commands
     def available_commands_for_initiator
       Commands.constants.map do |command|
         next if HELP_LIST_IGNORE.include? command
+
         const = Commands.const_get(command)
         next unless const.is_a? Class
         next unless const.new(@initiator).initiator_is_authorized?
+
         command.to_s.downcase
       end.compact
     end
