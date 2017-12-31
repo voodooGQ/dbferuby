@@ -5,19 +5,22 @@ require 'singleton'
 require 'forwardable'
 require_relative 'connection_pool'
 require_relative 'player_connection'
+require_relative 'world'
 
 class Game
   extend Forwardable
   include Singleton
 
   attr_reader :server,
-              :connections
+              :connections,
+              :world
 
   def initialize
     @connections = ConnectionPool.new
   end
 
   def run(ip: "127.0.0.1", port: "8081", socket_server: EventMachine, &block)
+    @world ||= build_world
     @server ||= socket_server.run do |s|
       # hit Control + C to stop
       Signal.trap("INT")  { socket_server.stop }
@@ -25,6 +28,15 @@ class Game
 
       socket_server.start_server ip, port, PlayerConnection
       yield(socket_server) if block_given?
+    end
+  end
+
+  def build_world
+    World.new.tap do |world|
+      world[:areas] = {}
+      world[:rooms] = {}
+      Area.all.each { |area| world[:areas][area.id] = area }
+      Room.all.each { |room| world[:rooms][room.id] = room }
     end
   end
 

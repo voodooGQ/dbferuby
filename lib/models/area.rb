@@ -12,6 +12,8 @@
 require "active_record"
 
 class Area < ActiveRecord::Base
+  attr_accessor :cached_rooms
+
   has_many :rooms
   validates :dimension, presence: true, numericality: {
     odd: true, greater_than_or_equal_to: 15, less_than_or_equal_to: 101
@@ -20,7 +22,8 @@ class Area < ActiveRecord::Base
   after_create :create_rooms
 
   def rooms
-    @rooms ||= super
+    Game.instance.world[:rooms].values || super
+    #@cached_rooms ||= super
   end
 
   def coord_index_range

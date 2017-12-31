@@ -29,12 +29,12 @@ class Room < ActiveRecord::Base
 
   has_many :occupants, foreign_key: "room_id", class_name: "Player"
 
-  def connected_occupants
-    connections = Game.instance.players
+  def area
+    Game.instance.world[:areas][area_id] || Area.find(area_id)
+  end
 
-    occupants.flat_map do |player|
-      connections.detect{|c| c.id == player.id}
-    end.compact
+  def connected_occupants
+    Game.instance.players.select{|p| p.room_id == id}
   end
 
   def occupied?

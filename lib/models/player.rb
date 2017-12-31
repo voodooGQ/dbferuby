@@ -24,11 +24,15 @@ class Player < ActiveRecord::Base
     in: VALID_RACES, message: "%{value} is not a valid race"
   }
 
-  belongs_to :room, required: true, autosave: true
+  belongs_to :room, required: true
 
   [:admin?, :is_admin?].each{ |m| alias_attribute m, :admin }
 
-  # Through relationship is significantly slower
+  def room
+    Game.instance.world[:rooms][room_id] || Room.find(room_id)
+  end
+
+  # Through relationship is significantly slower & this takes cache into account
   def area
     room.area
   end
