@@ -37,6 +37,10 @@ class Room < ActiveRecord::Base
     end.compact
   end
 
+  def occupied?
+    connected_occupants.any?
+  end
+
   def unique_coordinates_by_area
     rooms = area.rooms.where("x_coord = ? AND y_coord = ?", x_coord, y_coord)
 
