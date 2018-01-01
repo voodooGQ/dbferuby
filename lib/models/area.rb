@@ -10,6 +10,7 @@
 #
 
 require "active_record"
+require_relative "../game"
 
 class Area < ActiveRecord::Base
   has_many :rooms
@@ -18,9 +19,16 @@ class Area < ActiveRecord::Base
   }
 
   after_create :create_rooms
+  after_create :rebuild
 
+  def rebuild
+    Game.instance.build_world
+  end
   def rooms
-    Game.instance.world.areas[id]["rooms"].values || self[:rooms]
+    #binding.pry
+    rooms = Game.instance.world.areas.dig(id, "rooms")
+    rooms ? rooms.values : Room.where("area_id = ?", id)
+    #Room.where("area_id = ?", id) if game_rooms.empty?
   end
 
   def coord_index_range
@@ -51,7 +59,7 @@ class Area < ActiveRecord::Base
           override: true,
           y_coord: grid_coord_index + y_index,
           x_coord: grid_coord_index + x_index,
-          area: self,
+          area_id: id,
           sector: Sector.first
         )
       end

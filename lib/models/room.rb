@@ -30,7 +30,7 @@ class Room < ActiveRecord::Base
   has_many :occupants, foreign_key: "room_id", class_name: "Player"
 
   def area
-    Game.instance.world.areas[area_id]["area"] || Area.find(area_id)
+    Game.instance.world.areas.dig(area_id, "area") || Area.find(area_id)
   end
 
   def connected_occupants
