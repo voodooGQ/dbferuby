@@ -30,7 +30,7 @@ class Room < ActiveRecord::Base
   has_many :occupants, foreign_key: "room_id", class_name: "Player"
 
   def area
-    Game.instance.world[:areas][area_id] || Area.find(area_id)
+    Game.instance.world.areas[area_id]["area"] || Area.find(area_id)
   end
 
   def connected_occupants
@@ -42,7 +42,9 @@ class Room < ActiveRecord::Base
   end
 
   def unique_coordinates_by_area
-    rooms = area.rooms.where("x_coord = ? AND y_coord = ?", x_coord, y_coord)
+    rooms = area.rooms.select do |room|
+      room.x_coord == x_coord && room.y_coord == y_coord
+    end
 
     if rooms.any? && !rooms.include?(self)
       errors.add(:x_coord, "and Y coord already exist in Area (#{area.name})")

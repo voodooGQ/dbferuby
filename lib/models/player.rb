@@ -29,7 +29,7 @@ class Player < ActiveRecord::Base
   [:admin?, :is_admin?].each{ |m| alias_attribute m, :admin }
 
   def room
-    Game.instance.world[:rooms][room_id] || Room.find(room_id)
+    Game.instance.world.rooms[room_id] || Room.find(room_id)
   end
 
   # Through relationship is significantly slower & this takes cache into account
