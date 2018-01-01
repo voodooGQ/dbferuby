@@ -8,7 +8,7 @@ RSpec.describe Movement, type: [:service] do
   describe "class_methods" do
     describe "linear" do
       it "returns the room object" do
-        spec_socket_server(debug: true) do
+        spec_socket_server do
           player = create(:player)
           send_player_to_area_center(player)
 

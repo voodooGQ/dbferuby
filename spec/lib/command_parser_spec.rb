@@ -17,7 +17,7 @@ RSpec.describe CommandParser, type: [:parser] do
   describe "instance_methods" do
     describe "call" do
       it "instantiates the command class when one exists" do
-        spec_socket_server(debug: true) do
+        spec_socket_server do
           connection = build(:player_connection)
           obj = subject.new(connection.player)
           expect(Commands::Mock).to receive(:new).and_call_original

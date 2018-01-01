@@ -32,7 +32,7 @@ module Commands
         end
 
         it "moves spherically" do
-          spec_socket_server(debug: true) do
+          spec_socket_server do
             movement_setup
 
             @player.room = Room.where(

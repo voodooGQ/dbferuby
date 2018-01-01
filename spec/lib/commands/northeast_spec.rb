@@ -35,12 +35,9 @@ module Commands
           spec_socket_server do
             movement_setup
 
-            @player.room = Game.instance.world.areas[@area.id]["rooms"].values.detect do |r|
-              r.x_coord == @coord_range.max && r.y_coord == @coord_range.min
-            end
-            #@player.room = Room.where(
-              #"x_coord = ? AND y_coord = ?", @coord_range.max, @coord_range.min,
-            #).first
+            @player.room = Room.where(
+              "x_coord = ? AND y_coord = ?", @coord_range.max, @coord_range.min,
+            ).first
 
             expect(@player.room.x_coord).to be(@coord_range.max)
             expect(@player.room.y_coord).to be(@coord_range.min)
