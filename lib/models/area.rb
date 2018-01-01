@@ -19,16 +19,15 @@ class Area < ActiveRecord::Base
   }
 
   after_create :create_rooms
-  after_create :rebuild
+  after_create :rebuild_world
 
-  def rebuild
-    Game.instance.build_world
+  def rebuild_world
+    Game.instance.world.build
   end
+
   def rooms
-    #binding.pry
     rooms = Game.instance.world.areas.dig(id, "rooms")
     rooms ? rooms.values : Room.where("area_id = ?", id)
-    #Room.where("area_id = ?", id) if game_rooms.empty?
   end
 
   def coord_index_range

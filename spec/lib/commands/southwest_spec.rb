@@ -36,7 +36,7 @@ module Commands
             movement_setup
 
             @player.room = Room.where(
-              "x_coord = ? AND y_coord = ?", @coord_range.min, @coord_range.max,
+              "x_coord = ? AND y_coord = ?", @coord_range.min, @coord_range.max
             ).first
 
             expect(@player.room.x_coord).to be(@coord_range.min)

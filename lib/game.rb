@@ -19,7 +19,8 @@ class Game
 
   def initialize
     @connections = ConnectionPool.new
-    build_world
+    @world = World.new
+    @world.build
   end
 
   def run(ip: "127.0.0.1", port: "8081", socket_server: EventMachine, &block)
@@ -30,22 +31,6 @@ class Game
 
       socket_server.start_server ip, port, PlayerConnection
       yield(socket_server) if block_given?
-    end
-  end
-
-  def build_world
-    @world = World.new.tap do |world|
-      Area.all.each do |area|
-        world.areas[area.id] = {}
-        world.areas[area.id]["area"] = area
-        world.areas[area.id]["rooms"] = {}
-      end
-      #binding.pry
-
-      Room.all.each do |room|
-        world.rooms[room.id] = room
-        world.areas[room.area_id]["rooms"][room.id] = room
-      end
     end
   end
 
