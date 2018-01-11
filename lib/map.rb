@@ -13,7 +13,9 @@ class Map
           sector = room.sector
 
           map << if room == center_room
-            "*".colorize(:yellow).blink
+            "*".cyan.blink
+          elsif room.occupied?
+            "*".red
           else
             sector.symbol.colorize(sector.color)
           end

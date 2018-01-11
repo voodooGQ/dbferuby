@@ -10,6 +10,7 @@
 #
 
 require "active_record"
+require_relative "../game"
 
 class Area < ActiveRecord::Base
   has_many :rooms
@@ -18,9 +19,15 @@ class Area < ActiveRecord::Base
   }
 
   after_create :create_rooms
+  after_create :rebuild_world
+
+  def rebuild_world
+    Game.instance.world.build
+  end
 
   def rooms
-    @rooms ||= super
+    rooms = Game.instance.world.areas.dig(id, "rooms")
+    rooms ? rooms.values : Room.where("area_id = ?", id)
   end
 
   def coord_index_range
@@ -47,11 +54,11 @@ class Area < ActiveRecord::Base
 
     dimension.times do |y_index|
       dimension.times do |x_index|
-        rooms << Room.create!(
+        Room.create!(
           override: true,
           y_coord: grid_coord_index + y_index,
           x_coord: grid_coord_index + x_index,
-          area: self,
+          area_id: id,
           sector: Sector.first
         )
       end

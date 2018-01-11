@@ -46,6 +46,11 @@ RSpec.configure do |config|
     mocks.allow_message_expectations_on_nil = false
   end
 
+  # DB Seeds
+  config.before :suite do
+    require_relative "../db/seeds/test"
+  end
+
   config.after :suite do
     DatabaseCleaner.clean_with(:truncation)
   end

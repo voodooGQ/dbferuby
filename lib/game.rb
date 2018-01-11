@@ -5,16 +5,22 @@ require 'singleton'
 require 'forwardable'
 require_relative 'connection_pool'
 require_relative 'player_connection'
+require_relative 'world'
+require_relative "models/area"
+require_relative "models/room"
 
 class Game
   extend Forwardable
   include Singleton
 
   attr_reader :server,
-              :connections
+              :connections,
+              :world
 
   def initialize
     @connections = ConnectionPool.new
+    @world = World.new
+    @world.build
   end
 
   def run(ip: "127.0.0.1", port: "8081", socket_server: EventMachine, &block)

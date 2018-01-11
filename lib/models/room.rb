@@ -29,16 +29,22 @@ class Room < ActiveRecord::Base
 
   has_many :occupants, foreign_key: "room_id", class_name: "Player"
 
-  def connected_occupants
-    connections = Game.instance.players
+  def area
+    Game.instance.world.areas.dig(area_id, "area") || Area.find(area_id)
+  end
 
-    occupants.flat_map do |player|
-      connections.detect{|c| c.id == player.id}
-    end.compact
+  def connected_occupants
+    Game.instance.players.select{|p| p.room_id == id}
+  end
+
+  def occupied?
+    connected_occupants.any?
   end
 
   def unique_coordinates_by_area
-    rooms = area.rooms.where("x_coord = ? AND y_coord = ?", x_coord, y_coord)
+    rooms = area.rooms.select do |room|
+      room.x_coord == x_coord && room.y_coord == y_coord
+    end
 
     if rooms.any? && !rooms.include?(self)
       errors.add(:x_coord, "and Y coord already exist in Area (#{area.name})")

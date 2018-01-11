@@ -52,10 +52,10 @@ RSpec.shared_context "socket", shared_context: :meta_data do
     send_player_to_area_center(player2)
 
     expect(player2).to receive(:send_data).with(
-      "\n#{@player.name} exits #{exit_dir}.\n"
+      "\n#{@player.name.red} exits #{exit_dir}.\n"
     )
     expect(player3).to receive(:send_data).with(
-      "\n#{@player.name} enters from the #{enter_dir}.\n"
+      "\n#{@player.name.red} enters from the #{enter_dir}.\n"
     )
     subject.new(@player).call
   end
