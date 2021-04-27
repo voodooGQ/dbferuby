@@ -1,4 +1,6 @@
 # frozen_string_literal: true
+require_relative "../lib/autoloader"
+require 'random_word'
 
 puts 'Creating Sector';
 

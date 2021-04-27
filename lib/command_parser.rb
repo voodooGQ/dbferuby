@@ -4,6 +4,7 @@ class CommandParser
   attr_reader :player
 
   GLOBAL_ALIASES = {
+    'f'          => 'fly',
     'n'          => 'north',
     's'          => 'south',
     'e'          => 'east',
