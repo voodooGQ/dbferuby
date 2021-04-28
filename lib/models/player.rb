@@ -14,39 +14,13 @@
 
 require "active_record"
 
-class Player < ActiveRecord::Base
+class Player < Character
   attr_accessor :connection
-
-  VALID_RACES = %w[saiyan human namek icer mutant android]
-
-  validates :name, presence: true, uniqueness: { case_sensitive: false }
-  validates :race, presence: true, inclusion: {
-    in: VALID_RACES, message: "%{value} is not a valid race"
-  }
-
-  belongs_to :room, required: true
 
   [:admin?, :is_admin?].each{ |m| alias_attribute m, :admin }
 
-  def room
-    Game.instance.world.rooms[room_id] || Room.find(room_id)
-  end
-
-  # Through relationship is significantly slower & this takes cache into account
-  def area
-    room.area
-  end
-
   def connected?
     !!@connection
-  end
-
-  def roommates
-    room.connected_occupants.reject{|o| o == self}
-  end
-
-  def areamates
-    Game.instance.players.select{|p| p.area == area && p != self}
   end
 
   def method_missing(m, *args, &block)
