@@ -27,14 +27,14 @@ class Room < ActiveRecord::Base
   belongs_to :area, required: true
   belongs_to :sector, required: true
 
-  has_many :occupants, foreign_key: "room_id", class_name: "Player"
+  has_many :occupants, foreign_key: "room_id", class_name: "Charcter"
 
   def area
     Game.instance.world.areas.dig(area_id, "area") || Area.find(area_id)
   end
 
   def connected_occupants
-    Game.instance.players.select{|p| p.room_id == id}
+    Game.instance.players.select{|p| p.room_id == id} && Game.instance.npcs.select{|n| n.room_id == id}
   end
 
   def occupied?

@@ -17,5 +17,9 @@ class ConnectionPool < Array
   def players
     self.map(&:player)
   end
+
+  def npcs
+    self.map(&:npc)
+  end
 end
 

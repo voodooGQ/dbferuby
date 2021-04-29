@@ -12,10 +12,10 @@
 #  updated_at :datetime         not null
 #
 
-require "active_record"
-
 class Player < Character
   attr_accessor :connection
+
+  validates :name, presence: true, uniqueness: { case_sensitive: false }
 
   [:admin?, :is_admin?].each{ |m| alias_attribute m, :admin }
 

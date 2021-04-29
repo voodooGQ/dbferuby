@@ -5,7 +5,6 @@ class Character < ActiveRecord::Base
 
   VALID_RACES = %w[saiyan human namek icer mutant android]
 
-  validates :name, presence: true, uniqueness: { case_sensitive: false }
   validates :race, presence: true, inclusion: {
     in: VALID_RACES, message: "%{value} is not a valid race"
   }
@@ -27,5 +26,9 @@ class Character < ActiveRecord::Base
 
   def areamates
     Game.instance.players.select{|p| p.area == area && p != self}
+  end
+
+  def is_player?
+    self.class == 'Player'
   end
 end

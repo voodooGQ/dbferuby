@@ -19,6 +19,7 @@ class Game
 
   def initialize
     @connections = ConnectionPool.new
+
     @world = World.new
     @world.build
   end
@@ -32,6 +33,10 @@ class Game
       socket_server.start_server ip, port, PlayerConnection
       yield(socket_server) if block_given?
     end
+  end
+
+  def npcs
+    NPC.all
   end
 
   def_delegator  :@connections, :add_connection,    :add_connection_to_pool
